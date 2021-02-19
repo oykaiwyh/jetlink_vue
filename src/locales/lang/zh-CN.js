@@ -9,7 +9,7 @@ const components = {
 
 const locale = {
   'message': '-',
-  'menu.home': '主页',
+  'menu.home': '首页',
   'menu.dashboard': '仪表盘',
   'menu.dashboard.analysis': '统计分析',
   'menu.dashboard.monitor': '监控页'

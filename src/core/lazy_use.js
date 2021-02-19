@@ -44,7 +44,10 @@ import {
   Statistic,
   Descriptions,
   message,
-  notification
+  notification,
+  // 新增的ui组件
+  Cascader,
+  TreeSelect
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -97,6 +100,8 @@ Vue.use(PageHeader)
 Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
+Vue.use(Cascader)
+Vue.use(TreeSelect)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

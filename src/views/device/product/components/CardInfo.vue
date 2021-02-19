@@ -1,12 +1,16 @@
 <template>
   <div class="cardInfo">
     <div>
-      <p>活跃用户</p>
+      <p >设备数量</p>
       <p>{{ activeUser }}</p>
     </div>
     <div>
+      <p>活跃用户</p>
+      <p><a-badge status="success" />{{ activeUser }}</p>
+    </div>
+    <div>
       <p>新增用户</p>
-      <p>{{ newUser }}</p>
+      <p style="font-size: 14px; font-weight: 600;">{{ newUser }}</p>
     </div>
   </div>
 </template>
@@ -36,21 +40,21 @@ export default {
   .clearfix();
 
   margin-top: 16px;
-  margin-left: 40px;
   & > div {
     position: relative;
     float: left;
-    width: 50%;
+    width: 33%;
     text-align: left;
+    text-align: center;
     p {
       margin: 0;
-      font-size: 24px;
+      font-size: 14px;
       line-height: 32px;
     }
     p:first-child {
       margin-bottom: 4px;
       color: @text-color-secondary;
-      font-size: 12px;
+      font-size: 14px;
       line-height: 20px;
     }
   }

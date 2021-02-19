@@ -33,11 +33,34 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/device/product',
-            name: '产品',
+            name: 'DeviceProduct',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/device/product'),
-            meta: { title: '产品', keepAlive: true, icon: 'laptop', permission: [ 'table' ] }
+            meta: { title: '产品', keepAlive: true, icon: 'laptop', permission: [ 'table' ] },
+            children: [
+              {
+                path: '/device/product/add',
+                name: 'AddProduct',
+                hidden: true,
+                component: () => import('@/views/device/product/add'),
+                meta: { title: '新建产品', keepAlive: true, permission: [ 'table' ] }
+              },
+              {
+                path: '/device/product/save/:id',
+                name: 'ProductDetail',
+                hidden: true,
+                component: () => import('@/views/device/product/save'),
+                meta: { title: '产品详情', keepAlive: true, permission: [ 'table' ] }
+              }
+            ]
           }
+          // {
+          //   path: '/device/product/add',
+          //   name: '新建产品',
+          //   hidden: true,
+          //   component: () => import('@/views/device/product/add'),
+          //   meta: { title: '新建产品', keepAlive: true, permission: [ 'table' ] }
+          // }
         ]
       },
 
