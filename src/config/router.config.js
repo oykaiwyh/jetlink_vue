@@ -23,7 +23,7 @@ export const asyncRouterMap = [
         meta: { title: 'menu.dashboard.analysis', icon: 'dashboard', keepAlive: false, permission: [ 'dashboard' ] }
       },
 
-      // list
+      // Menulist
       {
         path: '/device',
         name: 'device',
@@ -53,14 +53,23 @@ export const asyncRouterMap = [
                 meta: { title: '产品详情', keepAlive: true, permission: [ 'table' ] }
               }
             ]
+          },
+          {
+            path: '/device/instance',
+            name: 'instance',
+            component: () => import('@/views/device/instance'),
+            hideChildrenInMenu: true,
+            meta: { title: '设备', icon: 'desktop', keepAlive: true, permission: [ 'table' ] },
+            children: [
+              {
+                path: '/device/instance/save/:id',
+                name: 'InstanceDetail',
+                hidden: true,
+                component: () => import('@/views/device/instance/editor'),
+                meta: { title: '设备详情', keepAlive: true, permission: [ 'table' ] }
+              }
+            ]
           }
-          // {
-          //   path: '/device/product/add',
-          //   name: '新建产品',
-          //   hidden: true,
-          //   component: () => import('@/views/device/product/add'),
-          //   meta: { title: '新建产品', keepAlive: true, permission: [ 'table' ] }
-          // }
         ]
       },
 

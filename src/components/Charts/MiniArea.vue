@@ -2,8 +2,8 @@
   <div class="antv-chart-mini">
     <div class="chart-wrapper" :style="{ height: 46 }">
       <v-chart :force-fit="true" :height="height" :data="data" :padding="[36, 0, 18, 0]">
-        <v-tooltip />
-        <v-smooth-area position="x*y" />
+        <v-tooltip :showTitle="false" :crosshairs="false"/>
+        <v-smooth-area position="x*y" :tooltip="tooltip"/>
       </v-chart>
     </div>
   </div>

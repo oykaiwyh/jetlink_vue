@@ -47,9 +47,12 @@ import {
   notification,
   // 新增的ui组件
   Cascader,
-  TreeSelect
+  TreeSelect,
+  AutoComplete
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
+// 新增的edit功能插件
+import VueAceEdit from 'vue-ace-edit'
 
 // ext library
 import VueCropper from 'vue-cropper'
@@ -100,8 +103,10 @@ Vue.use(PageHeader)
 Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
+// 注册新增的ui组件
 Vue.use(Cascader)
 Vue.use(TreeSelect)
+Vue.use(AutoComplete)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message
@@ -117,5 +122,7 @@ Vue.use(MultiTab)
 Vue.use(PageLoading)
 Vue.use(PermissionHelper)
 Vue.use(VueCropper)
+// 新增的edit功能插件
+Vue.use(VueAceEdit)
 
 process.env.NODE_ENV !== 'production' && console.warn('[antd-pro] NOTICE: Antd use lazy-load.')

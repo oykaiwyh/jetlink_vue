@@ -1,12 +1,15 @@
 <template>
-  <a-table :columns="attributeColumns" :data-source="showData">
-    <template slot="operation">
-      <template v-for="(item, index) in actions">
-        <a-button :key="'tableColoumns'+index" type="link" style="padding: 0;">{{ item.name }}</a-button>
-        <a-divider :key="'divider'+index" type="vertical" v-if="index!==actions.length-1"/>
+  <div>
+    <a-table :columns="attributeColumns" :data-source="showData">
+      <template slot="operation">
+        <template v-for="(item, index) in actions">
+          <a-button :key="'tableColoumns'+index" type="link" style="padding: 0;" @click="setAlarmActiveKey(item)">{{ item.name }}</a-button>
+          <a-divider :key="'divider'+index" type="vertical" v-if="index!==actions.length-1"/>
+        </template>
       </template>
-    </template>
-  </a-table>
+    </a-table>
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -24,6 +27,15 @@
       actions: {
         type: Array,
         default: () => []
+      }
+    },
+    data () {
+      return {
+      }
+    },
+    methods: {
+      setAlarmActiveKey (item) {
+        this.$emit('setAlarmActiveKey', item)
       }
     }
   }

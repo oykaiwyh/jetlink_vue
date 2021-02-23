@@ -50,10 +50,10 @@
 
 <script>
   import ComDrawer from '@/components/jtt_Drawer'
-  import DefineAttribute from '@/pages/product/device/save/definition/attribute.vue'
-  import DefineFunction from '@/pages/product/device/save/definition/Functions.vue'
-  import DefineEvent from '@/pages/product/device/save/definition/Events.vue'
-  import DefineTags from '@/pages/product/device/save/definition/Tags.vue'
+  import DefineAttribute from '@/pages/device/product/save/definition/attribute.vue'
+  import DefineFunction from '@/pages/device/product/save/definition/Functions.vue'
+  import DefineEvent from '@/pages/device/product/save/definition/Events.vue'
+  import DefineTags from '@/pages/device/product/save/definition/Tags.vue'
 
   export default {
     name: 'CardTable',

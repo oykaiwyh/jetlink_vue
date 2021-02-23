@@ -1,9 +1,9 @@
 <template>
   <div class="antv-chart-mini">
-    <div class="chart-wrapper" :style="{ height: 46 }">
-      <v-chart :force-fit="true" :height="height" :data="data" :padding="[36, 5, 18, 5]">
-        <v-tooltip />
-        <v-bar position="x*y" />
+    <div class="chart-wrapper">
+      <v-chart :force-fit="true" :height="height" :data="data" :padding="[36, 5, 30, 5]">
+        <v-tooltip :showTitle="false" :crosshairs="false"/>
+        <v-bar position="x*y" :tooltip="tooltip" />
       </v-chart>
     </div>
   </div>
@@ -14,7 +14,7 @@ import moment from 'moment'
 const data = []
 const beginDay = new Date().getTime()
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 30; i++) {
   data.push({
     x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
     y: Math.round(Math.random() * 10)
