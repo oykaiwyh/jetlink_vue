@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table :columns="attributeColumns" :data-source="showData">
+    <a-table :loading="loading" :columns="attributeColumns" :data-source="showData">
       <template slot="operation">
         <template v-for="(item, index) in actions">
           <a-button :key="'tableColoumns'+index" type="link" style="padding: 0;" @click="setAlarmActiveKey(item)">{{ item.name }}</a-button>
@@ -16,6 +16,10 @@
   export default {
     name: 'ComTable',
     props: {
+      loading: {
+        type: Boolean,
+        default: false
+      },
       attributeColumns: {
         type: Array,
         default: () => []

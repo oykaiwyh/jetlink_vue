@@ -115,7 +115,7 @@
 </template>
 
 <script>
-  import ComTable from '@/components/jtt_Table'
+
   import InsInfo from './components/Info'
   import InsSearch from './search'
   import InsSave from './save'
@@ -157,7 +157,6 @@
   export default {
     name: 'DeviceInstance',
     components: {
-      ComTable,
       InsInfo,
       InsSearch,
       InsSave

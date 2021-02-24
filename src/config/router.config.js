@@ -69,6 +69,64 @@ export const asyncRouterMap = [
                 meta: { title: '设备详情', keepAlive: true, permission: [ 'table' ] }
               }
             ]
+          },
+          {
+            path: '/device/alarm',
+            name: 'deviceAlarm',
+            component: () => import('@/views/device/alarmlog'),
+            meta: { title: '设备告警', icon: 'alert', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
+      },
+      {
+        path: '/network',
+        name: 'network',
+        component: RouteView,
+        meta: { title: '设备接入', icon: 'login', permission: [ 'exception' ] },
+        children: [
+          {
+            path: '/network/certificate',
+            name: 'NetworkCertificate',
+            component: () => import(/* webpackChunkName: "NetworkCertificate" */ '@/views/network/certificate'),
+            meta: { title: '证书管理', icon: 'book', permission: [ 'exception' ] }
+          },
+          {
+            path: '/network/protocol',
+            name: 'networkProtocol',
+            component: () => import(/* webpackChunkName: "networkProtocol" */ '@/views/network/protocol'),
+            meta: { title: '协议管理', icon: 'wallet', permission: [ 'exception' ] }
+          },
+          {
+            path: '/network/type',
+            name: 'networkType',
+            component: () => import(/* webpackChunkName: "networkType" */ '@/views/network/type'),
+            meta: { title: '网络组件', icon: 'deployment-unit', permission: [ 'exception' ] }
+          },
+          {
+            path: '/network/gateway',
+            name: 'networkGateway',
+            component: () => import(/* webpackChunkName: "networkGateway" */ '@/views/network/gateway'),
+            meta: { title: '设备网关', icon: 'cloud-server', permission: [ 'exception' ] }
+          }
+        ]
+      },
+      {
+        path: '/logger',
+        name: 'logger',
+        component: RouteView,
+        meta: { title: '日志管理', icon: 'calendar', permission: [ 'exception' ] },
+        children: [
+          {
+            path: '/logger/access',
+            name: 'loggerAccess',
+            component: () => import(/* webpackChunkName: "loggerAccess" */ '@/views/logger/access'),
+            meta: { title: '证书管理', icon: 'dash', permission: [ 'exception' ] }
+          },
+          {
+            path: '/logger/system',
+            name: 'loggerSystem',
+            component: () => import(/* webpackChunkName: "loggerSystem" */ '@/views/logger/system'),
+            meta: { title: '系统日志', icon: 'ordered-list', permission: [ 'exception' ] }
           }
         ]
       },

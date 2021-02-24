@@ -54,7 +54,7 @@
         <ins-editor-log></ins-editor-log>
       </template>
       <template v-if="ActiveTabKey ==='alarm' ">
-        <pro-alarm></pro-alarm>
+        <device-alarm></device-alarm>
       </template>
     </page-header-wrapper>
   </a-spin>
@@ -65,7 +65,7 @@
   import InsEditorStatus from './detail/Status'
   import InsEditorFunction from './detail/Function'
   import InsEditorLog from './detail/Log'
-  import ProAlarm from '../../alarm'
+  import DeviceAlarm from '../../alarm'
   export default {
     name: 'InsEditor',
     components: {
@@ -73,7 +73,7 @@
       InsEditorStatus,
       InsEditorFunction,
       InsEditorLog,
-      ProAlarm
+      DeviceAlarm
     },
     data () {
       return {

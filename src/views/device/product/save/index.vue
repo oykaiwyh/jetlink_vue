@@ -66,7 +66,7 @@
           <pro-pyh-model></pro-pyh-model>
         </a-tab-pane>
         <a-tab-pane key="warnSetting" tab="告警设置">
-          <pro-alarm></pro-alarm>
+          <device-alarm></device-alarm>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -80,7 +80,7 @@
   import ComDrawer from '@/components/jtt_Drawer'
   import ProBaseInfo from '../components/ProBaseInfo'
   import ProPyhModel from './ProPyhModel'
-  import ProAlarm from './ProAlarm'
+  import DeviceAlarm from '@/views/device/alarm'
 
   export default {
     name: 'ProductDetail',
@@ -88,7 +88,7 @@
       ComDrawer,
       ProBaseInfo,
       ProPyhModel,
-      ProAlarm
+      DeviceAlarm
     },
     data () {
       return {

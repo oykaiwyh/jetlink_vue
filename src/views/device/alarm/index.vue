@@ -75,7 +75,7 @@
     }
   ]
   export default {
-    name: 'ProAlarm',
+    name: 'DeviceAlarm',
     components: {
       ComTable,
       DefineAlarm
