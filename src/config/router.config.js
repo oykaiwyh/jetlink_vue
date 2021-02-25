@@ -111,6 +111,40 @@ export const asyncRouterMap = [
         ]
       },
       {
+        path: '/notice',
+        name: 'notice',
+        component: RouteView,
+        meta: { title: '通知管理', icon: 'message', permission: [ 'exception' ] },
+        children: [
+          {
+            path: '/notice/config',
+            name: 'NoticeConfig',
+            component: () => import(/* webpackChunkName: "NoticeConfig" */ '@/views/notice/config'),
+            meta: { title: '通知配置', icon: 'alert', permission: [ 'exception' ] }
+          },
+          {
+            path: '/notice/template',
+            name: 'NoticeTemplate',
+            component: () => import(/* webpackChunkName: "NoticeTemplate" */ '@/views/notice/template'),
+            meta: { title: '通知模版', icon: 'bell', permission: [ 'exception' ] }
+          }
+        ]
+      },
+      {
+        path: '/rule-engine',
+        name: 'notice',
+        component: RouteView,
+        meta: { title: '规则引擎', icon: 'retweet', permission: [ 'exception' ] },
+        children: [
+          {
+            path: '/rule-engine/sqlRule',
+            name: 'RuleEngineSqlrule',
+            component: () => import(/* webpackChunkName: "RuleEngineSqlrule" */ '@/views/rule-engine/sqlRule'),
+            meta: { title: '通知配置', icon: 'rise', permission: [ 'exception' ] }
+          }
+        ]
+      },
+      {
         path: '/logger',
         name: 'logger',
         component: RouteView,
@@ -118,14 +152,14 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/logger/access',
-            name: 'loggerAccess',
-            component: () => import(/* webpackChunkName: "loggerAccess" */ '@/views/logger/access'),
+            name: 'LoggerAccess',
+            component: () => import(/* webpackChunkName: "LoggerAccess" */ '@/views/logger/access'),
             meta: { title: '证书管理', icon: 'dash', permission: [ 'exception' ] }
           },
           {
             path: '/logger/system',
-            name: 'loggerSystem',
-            component: () => import(/* webpackChunkName: "loggerSystem" */ '@/views/logger/system'),
+            name: 'LoggerSystem',
+            component: () => import(/* webpackChunkName: "LoggerSystem" */ '@/views/logger/system'),
             meta: { title: '系统日志', icon: 'ordered-list', permission: [ 'exception' ] }
           }
         ]
