@@ -1,10 +1,10 @@
 <template>
   <div>
     <page-header-wrapper
-      :title="GetMetaTitle"
+      :title="'设备管理'"
       v-if="!GetDetailStatus"
     >
-      <div class="standardTable" >
+      <div class="standardList" >
         <a-card :bordered="false" :style="{ height: '95px' }">
           <a-spin :spinning="false">
             <a-row>
@@ -284,30 +284,6 @@
 </script>
 
 <style lang="less" scoped>
-@media screen and (max-width: 1024px) {
-  .tableListForm {
-    /deep/.ant-form-item {
-      margin-right: 24px;
-    }
-  }
-}
-.standardTable {
-  /deep/.ant-table-pagination {
-    margin-top: 24px;
-  }
-
-  .tableAlert {
-    margin-bottom: 16px;
-  }
-}
-
-.tableList {
-  .tableListOperator {
-    margin-bottom: 16px;
-
-    button {
-      margin-right: 8px;
-    }
-  }
-}
+@import '~@/utils/table.less';
+// @import './index.less';
 </style>

@@ -1,12 +1,15 @@
 <template>
   <div class="table-page-search-wrapper">
-    <a-form layout="inline">
-      <a-row :gutter="48">
-        <a-col v-for="(item, index) in ColData" :key="'com-search-form-col'+index" :md="8" :sm="24">
+    <a-form
+      layout="inline"
+      class="antAdvancedSearchForm"
+    >
+      <a-row :gutter="{ md: 8, lg: 24, xl: 48 }">
+        <a-col v-for="(item, index) in ColData" :key="'com-search-form-col'+index" :md="8" :sm="24" :style="{ height: '56px' }">
           <a-form-item :label="item.label">
             <a-input v-if="item.type === 'string' " v-model="queryParam.id" :placeholder="`请输入${item.label}`"/>
             <a-select v-if="item.type === 'list' " :mode="item.options.mode || 'multiple'">
-              <a-select-option v-for="(ele, inx) in item.options.data" :key="inx.id || inx">{{ ele.name || ele }}</a-select-option>
+              <a-select-option v-for="(ele, inx) in item.options.data" :key="ele.id || inx">{{ ele.name || ele }}</a-select-option>
             </a-select>
             <a-datePicker v-if="item.type === 'dateTime' " showTime :style="{ width: '100%' }" />
             <a-range-picker v-if="item.type === 'dateRange' || item.type === 'time'" showTime :style="{ width: '100%' }" />
@@ -24,27 +27,32 @@
             />
             <a-tree-select
               v-if="item.type === 'treeSelect'"
-              :dropdownStyle="item.itemProps.dropdownStyle || ''"
-              :allowClear="item.itemProps.showSearch || flase"
-              :treeDataSimpleMode="item.itemProps.showSearch || flase"
-              :showSearch="item.itemProps.showSearch || flase"
-              :multiple="item.itemProps.multiple || false"
+              :dropdownStyle="item.options.dropdownStyle || ''"
+              :allowClear="item.options.showSearch || false"
+              :treeDataSimpleMode="item.options.showSearch || false"
+              :showSearch="item.options.showSearch || false"
+              :multiple="item.options.multiple || false"
               :placeholder="`${item.label}`"
-              :treeData="item.itemProps.data || []"
+              :treeData="item.options.data || []"
               :treeNodeFilterProp="'title'"
             />
           </a-form-item>
         </a-col>
-        <a-col :md="!advanced && 8 || 24" :sm="24">
-          <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-            <a-button type="primary" @click="() => this.queryParam = {}">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-            <a v-if="formItems.length > 2" @click="toggleAdvanced" style="margin-left: 8px">
-              {{ advanced ? '收起' : '展开' }}
-              <a-icon :type="advanced ? 'up' : 'down'"/>
-            </a>
-          </span>
-        </a-col>
+        <div
+          :style="{
+            float: 'right',
+            marginBottom: '24px',
+            marginRight: '30px',
+            marginTop: '4px'
+          }"
+        >
+          <a-button type="primary" @click="() => this.queryParam = {}">查询</a-button>
+          <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+          <a v-if="formItems.length > 2" @click="toggleAdvanced" style="margin-left: 8px">
+            {{ advanced ? '收起' : '展开' }}
+            <a-icon :type="advanced ? 'up' : 'down'"/>
+          </a>
+        </div>
       </a-row>
     </a-form>
   </div>
@@ -87,6 +95,6 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="less">
+@import './index.less';
 </style>

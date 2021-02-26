@@ -140,7 +140,7 @@ export const asyncRouterMap = [
             path: '/rule-engine/sqlRule',
             name: 'RuleEngineSqlrule',
             component: () => import(/* webpackChunkName: "RuleEngineSqlrule" */ '@/views/rule-engine/sqlRule'),
-            meta: { title: '通知配置', icon: 'rise', permission: [ 'exception' ] }
+            meta: { title: '数据转发', icon: 'rise', permission: [ 'exception' ] }
           }
         ]
       },

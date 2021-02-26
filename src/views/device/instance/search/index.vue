@@ -17,14 +17,14 @@
       <div
         :style="{
           float: 'right',
-          marginBottom: 24,
-          marginRight: 30,
-          marginTop: 4
+          marginBottom: '24px',
+          marginRight: '30px',
+          marginTop: '4px'
         }">
-        <a-button type="primary" :style="{ marginLeft: 8 }" >
+        <a-button type="primary" :style="{ marginLeft: '8px' }" >
           查询
         </a-button>
-        <a-button :style="{ marginLeft: 8 }" >
+        <a-button :style="{ marginLeft: '8px' }" >
           重置
         </a-button>
       </div>

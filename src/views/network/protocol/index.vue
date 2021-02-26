@@ -130,6 +130,6 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="less" scoped>
+@import '~@/utils/table.less';
 </style>

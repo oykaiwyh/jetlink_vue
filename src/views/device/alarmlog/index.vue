@@ -121,7 +121,7 @@
             label: '产品',
             key: 'productId$IN',
             type: 'list',
-            props: {
+            options: {
                 // data: productList.current,
                 mode: 'tags'
             }

@@ -3,9 +3,9 @@
     <div class="filterCardList">
       <a-card :bordered="false">
         <a-form layout="inline">
-          <standard-form-row>
+          <standard-form-row title="组件类型" :block="true" :style="{ paddingBottom: '11px' }">
             <a-form-item>
-              <div>
+              <tag-select :expandable="true">
                 <a-checkable-tag v-model="checked1" >
                   Tag1
                 </a-checkable-tag>
@@ -15,10 +15,10 @@
                 <a-checkable-tag v-model="checked3" >
                   Tag3
                 </a-checkable-tag>
-              </div>
+              </tag-select>
             </a-form-item>
           </standard-form-row>
-          <standard-form-row :title="'其它选项'">
+          <standard-form-row :title="'其它选项'" :grid="true" :last="true">
             <a-row :gutter="16">
               <a-col :lg="8" :md="10" :sm="10" :xs="24">
                 <a-form-item :xs="{ span: 24 }" :sm="{ span: 16 }" label="配置名称">
@@ -35,8 +35,8 @@
         :loading="loading"
         :data-source="data"
       >
-        <a-list-item>
-          <template>
+        <a-list-item slot="renderItem" slot-scope="item">
+          <template v-if="item.type === 'add'">
             <a-button
               type="dashed"
               class="newButton"
@@ -45,9 +45,7 @@
               新增组件
             </a-button>
           </template>
-        </a-list-item>
-        <a-list-item slot="renderItem" slot-scope="item">
-          <template>
+          <template v-else>
             <a-card
               hoverable
               :bodyStyle="{ paddingBottom: '20px' }"
@@ -128,12 +126,16 @@
 </template>
 
 <script>
-  import StandardFormRow from './components/standard-form-row'
+  import StandardFormRow from '@/components/jtt_StandardFormRow'
+  import TagSelect from '@/components/jtt_TagSelect'
   import SaveDrawer from './save'
   import ComHide from '@/components/jtt_Hide'
   import SaveDebug from './save/debug'
 
   const data = [
+    {
+      type: 'add'
+    },
     {
       avatar: '',
       name: '123',
@@ -160,6 +162,7 @@
     name: 'NetworkType',
     components: {
       StandardFormRow,
+      TagSelect,
       SaveDrawer,
       ComHide,
       SaveDebug
@@ -203,5 +206,5 @@
 </script>
 
 <style lang="less" scoped>
-@import "index.less";
+@import "./index.less";
 </style>

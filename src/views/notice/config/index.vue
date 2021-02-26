@@ -3,9 +3,9 @@
     <div class="filterCardList">
       <a-card :bordered="false">
         <a-form layout="inline">
-          <standard-form-row :title="'组件类型'">
+          <standard-form-row :title="'组件类型'" :block="true" :style="{ paddingBottom: '11px' }">
             <a-form-item>
-              <div>
+              <tag-select :expandable="true">
                 <a-checkable-tag v-model="checked1" >
                   Tag1
                 </a-checkable-tag>
@@ -15,10 +15,10 @@
                 <a-checkable-tag v-model="checked3" >
                   Tag3
                 </a-checkable-tag>
-              </div>
+              </tag-select>
             </a-form-item>
           </standard-form-row>
-          <standard-form-row :title="'其它选项'">
+          <standard-form-row :title="'其它选项'" :grid="true" :last="true">
             <a-row :gutter="16">
               <a-col :lg="8" :md="10" :sm="10" :xs="24">
                 <a-form-item
@@ -33,11 +33,11 @@
           </standard-form-row>
         </a-form>
       </a-card>
-
+      <br/>
       <a-card>
         <a-button
           type="primary"
-          style="{ marginBottom: 16 }"
+          :style="{ marginBottom: '16px' }"
           @click="setSaveVisible"
         >
           新建
@@ -83,6 +83,7 @@
 
 <script>
   import StandardFormRow from '../components/standard-form-row'
+  import TagSelect from '../components/tag-select'
   import SaveModal from './save'
 
   const data = [
@@ -99,7 +100,8 @@
     name: 'NoticeConfig',
     components: {
       StandardFormRow,
-      SaveModal
+      SaveModal,
+      TagSelect
     },
     data () {
       const columns = [
@@ -181,6 +183,6 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="less" scoped>
+@import '../index.less';
 </style>

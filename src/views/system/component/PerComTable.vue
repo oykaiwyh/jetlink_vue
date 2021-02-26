@@ -3,7 +3,7 @@
     :loading="loading"
     :columns="columns"
     :data-source="data"
-    :rowKey="rowKey"
+    :rowKey="data.id"
   >
   </a-table>
 </template>

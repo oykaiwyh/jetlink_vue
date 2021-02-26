@@ -29,10 +29,11 @@
     </template>
     <div v-if="GetRouteShow">
       <a-card :bordered="false">
-        <com-search-form></com-search-form>
+        <com-search-form :formItems="formItems"></com-search-form>
 
         <div class="table-operator">
           <a-button type="primary" icon="plus" @click="handleAdd">新建</a-button>
+          <a-divider type="vertical" />
           <a-upload
             name="file"
             :multiple="true"
@@ -121,7 +122,75 @@ export default {
       selectedRowKeys: [],
       selectedRows: [],
       data: [],
-      loading: true
+      loading: true,
+      formItems: [
+        {
+          label: '产品名称',
+          key: 'name$LIKE',
+          type: 'string'
+        },
+        {
+          label: '所属品类',
+          key: 'classifiedId$LIKE',
+          type: 'treeSelect',
+          options: {
+            data: [
+              {
+                title: 'Node1',
+                value: '0-0',
+                key: '0-0',
+                children: [
+                  {
+                    value: '0-0-1',
+                    key: '0-0-1',
+                    scopedSlots: {
+                      // custom title
+                      title: 'title'
+                    }
+                  },
+                  {
+                    title: 'Child Node2',
+                    value: '0-0-2',
+                    key: '0-0-2'
+                  }
+                ]
+              },
+              {
+                title: 'Node2',
+                value: '0-1',
+                key: '0-1'
+              }
+            ],
+            dropdownStyle: { maxHeight: 500 }
+          }
+        },
+        {
+          label: '产品类型',
+          key: 'deviceType',
+          type: 'list',
+          options: {
+            data: [
+              { id: 'device', name: '直连设备' },
+              { id: 'childrenDevice', name: '网关子设备' },
+              { id: 'gateway', name: '网关设备' }
+            ],
+            mode: 'tags'
+          }
+        },
+        {
+          label: '消息协议',
+          key: 'messageProtocol$IN',
+          type: 'list',
+          options: {
+            data: [
+              { id: 'device', name: '直连设备' },
+              { id: 'childrenDevice', name: '网关子设备' },
+              { id: 'gateway', name: '网关设备' }
+            ],
+            mode: 'tags'
+          }
+        }
+      ]
 
     }
   },

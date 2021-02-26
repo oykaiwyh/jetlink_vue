@@ -19,7 +19,7 @@
 
 <script>
   export default {
-    name: 'StandardFormRow',
+    name: 'ComStandardFormRow',
     props: {
       title: {
         type: String,
