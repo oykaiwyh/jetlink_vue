@@ -84,7 +84,6 @@ import {
   ChartCard,
   MiniArea,
   MiniBar,
-  MiniProgress,
   MiniDashboard,
   MiniMessage
 } from '@/components'
@@ -98,7 +97,6 @@ export default {
     ChartCard,
     MiniArea,
     MiniBar,
-    MiniProgress,
     MiniDashboard,
     MiniMessage
   },

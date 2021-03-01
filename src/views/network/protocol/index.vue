@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import ComSearchForm from '@/components/jtt_SearchForm'
+  import ComSearchForm from '@/components/SearchForm'
   import SaveDrawer from './save'
 
   const data = [

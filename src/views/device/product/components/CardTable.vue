@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import ComDrawer from '@/components/jtt_Drawer'
+  import ComDrawer from '@/components/Drawer'
   import DefineAttribute from '@/pages/device/product/save/definition/attribute.vue'
   import DefineFunction from '@/pages/device/product/save/definition/Functions.vue'
   import DefineEvent from '@/pages/device/product/save/definition/Events.vue'

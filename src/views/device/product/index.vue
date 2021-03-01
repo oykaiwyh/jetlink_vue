@@ -100,7 +100,7 @@
 <script>
 import { getServiceList } from '@/api/manage'
 import CardInfo from './components/CardInfo'
-import ComSearchForm from '@/components/jtt_SearchForm'
+import ComSearchForm from '@/components/SearchForm'
 
 export default {
   name: 'DeviceProduct',

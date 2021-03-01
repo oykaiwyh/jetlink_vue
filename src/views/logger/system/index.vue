@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import ComSearchForm from '@/components/jtt_SearchForm'
+  import ComSearchForm from '@/components/SearchForm'
   import SaveModal from './save'
   import moment from 'moment'
 

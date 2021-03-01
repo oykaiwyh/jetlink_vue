@@ -85,7 +85,7 @@
 </template>
 
 <script>
-  import ComModal from '@/components/jtt_Modal'
+  import ComModal from '@/components/Modal'
   export default {
     name: 'InsSave',
     components: {

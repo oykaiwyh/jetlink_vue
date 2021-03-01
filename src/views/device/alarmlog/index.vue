@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import ComSearchForm from '@/components/jtt_SearchForm'
+  import ComSearchForm from '@/components/SearchForm'
   import PerComTable from '@/views/system/component/PerComTable'
   import moment from 'moment'
 

@@ -77,7 +77,7 @@
 </template>
 
 <script>
-  import ComDrawer from '@/components/jtt_Drawer'
+  import ComDrawer from '@/components/Drawer'
   import ProBaseInfo from '../components/ProBaseInfo'
   import ProPyhModel from './ProPyhModel'
   import DeviceAlarm from '@/views/device/alarm'

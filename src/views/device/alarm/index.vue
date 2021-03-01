@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import ComTable from '@/components/jtt_Table'
+  import ComTable from '@/components/Table'
   import DefineAlarm from '@/pages/device/product/save/alarm/index.vue'
   import moment from 'moment'
 

@@ -126,10 +126,10 @@
 </template>
 
 <script>
-  import StandardFormRow from '@/components/jtt_StandardFormRow'
-  import TagSelect from '@/components/jtt_TagSelect'
+  import StandardFormRow from '@/components/StandardFormRow'
+  import TagSelect from '@/components/TagSelect'
   import SaveDrawer from './save'
-  import ComHide from '@/components/jtt_Hide'
+  import ComHide from '@/components/Hide'
   import SaveDebug from './save/debug'
 
   const data = [

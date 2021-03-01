@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import ComSearchForm from '@/components/jtt_SearchForm'
+  import ComSearchForm from '@/components/SearchForm'
   import SaveDrawer from './save'
   import moment from 'moment'
   const data = [
