@@ -4,6 +4,8 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { getAccessToken } from './authority'
+import { builder } from '@/utils/models'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -43,18 +45,22 @@ const errorHandler = (error) => {
 
 // request interceptor
 request.interceptors.request.use(config => {
-  const token = storage.get(ACCESS_TOKEN)
+  const token = getAccessToken()
   // 如果 token 存在
   // 让每个请求携带自定义 token 请根据实际情况自行修改
   if (token) {
-    config.headers['Access-Token'] = token
+    config.headers['x-access-token'] = token
   }
   return config
 }, errorHandler)
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  return response.data
+  // 统一前端数据格式
+  const result = response.data
+  const data = result.result || []
+  const { status = 0, code = '', timestamp = 0, message = '' } = response
+  return builder(data, message, status, code, timestamp)
 }, errorHandler)
 
 const installer = {

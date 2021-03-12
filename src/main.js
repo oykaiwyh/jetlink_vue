@@ -13,11 +13,11 @@ import themePluginConfig from '../config/themePluginConfig'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
-import './mock'
+// import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
-// import './permission' // permission control
+import './jet_permission' // permission control
 import './utils/filter' // global filter
 import './global.less'
 

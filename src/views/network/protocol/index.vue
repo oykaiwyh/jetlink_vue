@@ -10,9 +10,20 @@
         </div>
         <div class="StandardTable">
           <a-table
+            :rowKey="record => record.id"
             :loading="loading"
             :columns="columns"
             :data-source="data"
+            :pagination="{
+              current: current+1,
+              total: total,
+              pageSize: pageSize,
+              showQuickJumper: true,
+              showSizeChanger: true,
+              pageSizeOptions: ['10', '20', '50', '100'],
+              showTotal:total => `共${total}条记录
+                                第${current + 1}/${Math.ceil(total / pageSize) }页`
+            }"
           >
           </a-table>
         </div>
@@ -32,17 +43,8 @@
 <script>
   import ComSearchForm from '@/components/SearchForm'
   import SaveDrawer from './save'
-
-  const data = [
-    {
-      key: 'id',
-      id: '1',
-      name: '1',
-      state: 1,
-      description: '1',
-      actions: ''
-    }
-  ]
+  import apis from '@/api'
+  import { HandleProtocolList } from './service'
 
   export default {
     name: 'NetworkProtocol',
@@ -112,12 +114,25 @@
           }
         ],
         columns,
-        data,
+        data: [],
+        pageSize: 10,
+        current: 0,
+        total: 0,
         DrawerVisible: false,
         DrawerData: {}
       }
     },
+    created () {
+      this.Init()
+    },
     methods: {
+      async Init () {
+        const result = await apis.network.GetProtocolList({
+          pageSize: this.pageSize
+        })
+        const handleData = HandleProtocolList(result)
+        this.data = handleData.data
+      },
       edit (data) {
         this.DrawerVisible = true
         this.DrawerData = data
