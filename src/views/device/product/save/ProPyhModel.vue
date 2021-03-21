@@ -9,7 +9,17 @@
           <a-button :style="{ marginLeft: '10px' }">物模型 TSL</a-button>
         </div>
         <a-tab-pane key="1" tab="属性定义">
-          <card-table :title="'属性定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/>
+          <card-table
+            :title="'属性定义'"
+            :tabKey="tabKey"
+            :attributeColumns="columns"
+            :showData="propertyData"
+            :edititem="editPropertiesData"
+            :showDrawer="showDrawer"
+            @close="onCloseDrawer"
+            @onEditItem="onEditItem"
+            @addData="onOpenDrawer"
+          />
         </a-tab-pane>
         <a-tab-pane key="2" tab="功能定义">
           <card-table :title="'功能定义'" :tabKey="tabKey" :attributeColumns="columns2" :showData="data"/>
@@ -26,45 +36,9 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import CardTable from '../components/CardTable'
 
-  const columns = [
-    {
-      title: '属性标识',
-      key: 'id',
-      dataIndex: 'id'
-    },
-    {
-      title: '属性名称',
-      key: 'name',
-      dataIndex: 'name'
-    },
-    {
-      title: '数据类型',
-      key: 'valueType',
-      dataIndex: 'valueType',
-      customRender: text => text.type
-    },
-    {
-      title: '是否只读',
-      key: 'expands.readOnly',
-      dataIndex: 'expands.readOnly',
-      customRender: text => ((text === 'true' || text === true) ? '是' : '否')
-    },
-    {
-      title: '说明',
-      key: 'description',
-      dataIndex: 'description',
-      width: '30%',
-      ellipsis: true
-    },
-    {
-      title: '操作',
-      // width: '180px',
-      key: 'operation',
-      scopedSlots: { customRender: 'operation' }
-    }
-  ]
   const columns2 = [
     {
       title: '功能标识',
@@ -113,22 +87,105 @@
       CardTable
     },
     data () {
+      const columns = [
+        {
+          title: '属性标识',
+          key: 'id',
+          dataIndex: 'id'
+        },
+        {
+          title: '属性名称',
+          key: 'name',
+          dataIndex: 'name'
+        },
+        {
+          title: '数据类型',
+          key: 'valueType',
+          dataIndex: 'valueType',
+          customRender: text => text.type
+        },
+        {
+          title: '是否只读',
+          key: 'expands.readOnly',
+          dataIndex: 'expands.readOnly',
+          customRender: text => ((text === 'true' || text === true) ? '是' : '否')
+        },
+        {
+          title: '说明',
+          key: 'description',
+          dataIndex: 'description',
+          width: '30%',
+          ellipsis: true
+        },
+        {
+          title: '操作',
+          // width: '180px',
+          key: 'operation',
+          customRender: (text, record) => (
+            <div>
+              <a onClick={() => this.editItem(record)}>编辑</a>
+              <a-divider type="vertical"/>
+              <a onClick={() => ''}>删除</a>
+            </div>
+          )
+          // scopedSlots: { customRender: 'operation' }
+        }
+      ]
       return {
         spinning: true,
+        editPropertiesData: {},
         tabKey: '1',
+        propertyData: [],
+        showDrawer: false,
         data,
         columns,
         columns2
       }
     },
     mounted () {
-      setTimeout(() => {
-        this.spinning = false
-      }, 30)
+      this.InitData()
+    },
+    computed: {
+      ...mapGetters('device', ['productDetailData']),
+      getDeviceId () {
+        return this.$route.params.id
+      }
     },
     methods: {
+      InitData () {
+        const { metadata } = this.productDetailData(this.getDeviceId)[0]
+        switch (this.tabKey) {
+          case '1':
+            this.propertyData = JSON.parse(metadata).properties
+            this.spinning = false
+            break
+          default:
+            break
+        }
+      },
       handleTabs (key) {
         this.tabKey = key
+      },
+      editItem (data) {
+        this.editPropertiesData = data
+        this.showDrawer = true
+      },
+      onCloseDrawer () {
+        this.editPropertiesData = {}
+        this.showDrawer = false
+      },
+      onEditItem (metadata) {
+        // this.InitData()
+        const listData = this.productDetailData(this.getDeviceId)[0]
+        this.propertyData = metadata.properties
+        this.$store.commit('device/EDIT_PRODUCT_LIST', {
+          ...listData,
+          metadata: JSON.stringify(metadata)
+        })
+        this.showDrawer = false
+      },
+      onOpenDrawer () {
+        this.showDrawer = true
       }
     }
   }

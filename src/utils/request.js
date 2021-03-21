@@ -20,6 +20,12 @@ const errorHandler = (error) => {
     const data = error.response.data
     // 从 localstorage 获取 token
     const token = storage.get(ACCESS_TOKEN)
+    if (error.response.status === 400) {
+      notification.error({
+        message: data.code,
+        description: data.message
+      })
+    }
     if (error.response.status === 403) {
       notification.error({
         message: 'Forbidden',
@@ -58,7 +64,7 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use((response) => {
   // 统一前端数据格式
   const result = response.data
-  const data = result.result || []
+  const data = result.result !== undefined ? result.result : []
   const { status = 0, code = '', timestamp = 0, message = '' } = response
   return builder(data, message, status, code, timestamp)
 }, errorHandler)

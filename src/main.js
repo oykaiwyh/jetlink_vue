@@ -20,7 +20,8 @@ import './core/lazy_use'
 import './jet_permission' // permission control
 import './utils/filter' // global filter
 import './global.less'
-
+import ValueType from '@/views/device/product/save/definition/ValueType'
+Vue.component('value-type', ValueType)
 Vue.config.productionTip = false
 
 // mount axios to `Vue.$http` and `this.$http`

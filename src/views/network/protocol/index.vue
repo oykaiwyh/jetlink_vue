@@ -45,6 +45,7 @@
   import SaveDrawer from './save'
   import apis from '@/api'
   import { HandleProtocolList } from './service'
+  import { ExixtKeys } from '@/utils/util'
 
   export default {
     name: 'NetworkProtocol',
@@ -131,7 +132,7 @@
           pageSize: this.pageSize
         })
         const handleData = HandleProtocolList(result)
-        this.data = handleData.data
+        this.data = ExixtKeys(handleData, 'data')
       },
       edit (data) {
         this.DrawerVisible = true

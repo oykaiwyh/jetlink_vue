@@ -8,7 +8,7 @@ import { NetworkApi } from '@/config/api/network'
 export function GetProtocolList (params) {
   return request({
     url: NetworkApi.ProtocolList,
-    methods: 'get',
+    method: 'GET',
     params: params
   })
 }
@@ -19,6 +19,6 @@ export function GetProtocolList (params) {
 export function GetProviders () {
   return request({
     url: NetworkApi.Providers,
-    methods: 'get'
+    method: 'GET'
   })
 }
