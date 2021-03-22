@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- int long -->
-    <template v-if="type === 'int' || type === 'long'">
+    <template v-if="type === 'int' || type === 'long' || type === 'float'">
       <a-form-item label="取值范围" :style="{height: '69px'}">
         <a-col :span="11">
           <a-form-item>
@@ -40,7 +40,9 @@
         <a-input-number
           :style="{width:'100%'}"
           placeholder="请输入精度"
-          v-decorator="['valueType.scale']"
+          v-decorator="['valueType.scale',{
+            initialValue:typeData.scale?typeData.scale : undefined
+          }]"
         />
       </a-form-item>
     </template>
@@ -160,13 +162,13 @@
     <template v-if="type === 'object' ">
       <a-form-item label="JSON对象">
         <a-list v-if="JsonData.length" bordered :data-source="JsonData">
-          <a-list-item slot="renderItem" slot-scope="item">
-            <a slot="actions" @click="editJsonData(item)">编辑</a>
+          <a-list-item slot="renderItem" slot-scope="item,index">
+            <a slot="actions" @click="editJsonData(item,index)">编辑</a>
             <a slot="actions">删除</a>
             {{ item.name }}
           </a-list-item>
         </a-list>
-        <a-button type="link" @click.stop="setJson">
+        <a-button type="link" @click="setJson">
           <a-icon type="plus" />
           添加参数
         </a-button>
@@ -176,7 +178,10 @@
       v-if="showJsonDrawer"
       :visible="showJsonDrawer"
       :paramsData="paramsData"
+      :paramsPos="paramsPos"
       @close="onJsonDrawerClose"
+      @editObjectDada="editObjectDada"
+      @addObjectDada="addObjectDada"
     ></define-paramter>
     <!-- file -->
     <template v-if="type === 'file' ">
@@ -266,19 +271,13 @@
         arrayOptions: ['int32(整数型)', 'float(单精度）', 'double(双精度)', 'text(字符串)', 'object(结构体)'],
         showJsonDrawer: false,
         JsonData: [],
-        paramsData: []
+        paramsData: {},
+        paramsPos: 0
       }
     },
     mounted () {
       this.GetData()
       this.initData()
-    },
-    watch: {
-      type: {
-        handler (newVal, oldVal) {
-          // console.log('this.type', this.type)
-        }
-      }
     },
     computed: {
       ...mapGetters('device', ['unitsData'])
@@ -290,12 +289,8 @@
       },
       initData () {
         console.log('this.typeData', this.typeData)
-        if (this.type === 'object') {
-          if (this.typeData.properties) {
-            this.JsonData = cloneDeep(this.typeData.properties)
-          } else {
-            this.JsonData = cloneDeep(this.typeData.parameters)
-          }
+        if (this.type === 'object' && Object.keys(this.typeData).length > 0) {
+          this.JsonData = cloneDeep(this.typeData.properties)
         }
         // this.getUnits()
       },
@@ -308,10 +303,20 @@
       },
       setJson () {
         this.showJsonDrawer = true
+        // this.JsonData.push({})
       },
-      editJsonData (data) {
+      editJsonData (data, index) {
+        this.paramsPos = index
         this.paramsData = data
         this.showJsonDrawer = true
+      },
+      editObjectDada (editPos, editData) {
+        this.$set(this.JsonData, editPos, editData)
+        this.showJsonDrawer = false
+      },
+      addObjectDada (editData) {
+        this.JsonData.splice(this.JsonData.length, 1, editData)
+        this.showJsonDrawer = false
       },
       onJsonDrawerClose () {
         this.showJsonDrawer = false

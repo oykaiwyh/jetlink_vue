@@ -120,14 +120,106 @@
 </template>
 
 <script>
-  import pyhModelMixin from '@/core/mixins/pyhModelMixin'
-
+  import ValueType from './ValueType'
+  import { cloneDeep } from 'lodash'
+  import { mapGetters } from 'vuex'
+  import apis from '@/api'
   export default {
     name: 'DefineAttribute',
-    mixins: [pyhModelMixin],
+    props: {
+      edititem: {
+        type: Object,
+        default: () => {}
+      }
+    },
+    components: {
+      ValueType
+    },
     data () {
       return {
-        form: this.$form.createForm(this, { name: 'DefineEventForm' })
+        form: this.$form.createForm(this, { name: 'DefineEventForm' }),
+        DrawerData: {},
+        valueTypeData: {},
+        valueType: '',
+        showTypes: false
+      }
+    },
+    mounted () {
+      this.InitData(this.edititem)
+    },
+    watch: {
+      edititem: {
+        handler (newVal, oldVal) {
+          this.InitData(newVal)
+        }
+      }
+    },
+    computed: {
+      ...mapGetters('device', ['productDetailData']),
+      getDeviceId () {
+        return this.$route.params.id
+      }
+    },
+    methods: {
+      InitData (data) {
+        if (Object.keys(data).length === 0) {
+          this.clearData()
+          return
+        }
+        this.DrawerData = cloneDeep(data)
+        this.valueTypeData = this.DrawerData.valueType
+        this.valueType = this.DrawerData.valueType.type
+        this.showTypes = true
+      },
+      clearData () {
+        this.form.resetFields()
+        this.DrawerData = {}
+        this.valueTypeData = {}
+        this.valueType = ''
+        this.showTypes = false
+      },
+      handleChangeType (value) {
+        this.showTypes = true
+        this.valueType = value
+      },
+      submitData () {
+        const {
+          form: { validateFields }
+        } = this
+        validateFields((err, fileValue) => {
+          if (!err) {
+            console.log('fileValue!!!', fileValue)
+
+            if (this.valueType === 'object') {
+              fileValue.valueType['properties'] = this.$refs.types.JsonData
+            }
+            const deviceInfo = this.productDetailData(this.getDeviceId)[0]
+            const metadata = JSON.parse(deviceInfo.metadata)
+            const { properties } = metadata
+            let addstatus = false
+            properties.forEach((element, index) => {
+              if (element.id === fileValue.id) {
+                addstatus = true
+                properties[index] = { ...fileValue }
+              }
+            })
+            if (!addstatus) {
+              properties.push(fileValue)
+            }
+            apis.deviceProduct.editProduct({
+              ...deviceInfo,
+              metadata: JSON.stringify(metadata)
+            }).then(res => {
+              if (res.status === 200) {
+                this.$message.info('更新成功')
+                this.clearData()
+                this.$emit('onEditItem', metadata)
+              }
+            }).catch(err => {
+              this.$message.info('updateData_Err', err)
+            })
+          }
+        })
       }
     }
   }

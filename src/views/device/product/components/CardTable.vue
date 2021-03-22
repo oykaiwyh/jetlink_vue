@@ -20,12 +20,18 @@
       <template v-if="tabKey==='1'">
         <define-attribute
           ref="attribute"
+          :tabKey="tabKey"
           :edititem="edititem"
           @onEditItem="onEditItem"
         ></define-attribute>
       </template>
       <template v-if="tabKey==='2'">
-        <define-function :form="form"></define-function>
+        <define-function
+          ref="funcs"
+          :tabKey="tabKey"
+          :edititem="edititem"
+          @onEditItem="onEditItem"
+        ></define-function>
       </template>
       <template v-if="tabKey==='3'">
         <define-event ></define-event>
@@ -117,6 +123,8 @@
       submitData () {
         if (this.tabKey === '1') {
           this.$refs.attribute.submitData()
+        } else if (this.tabKey === '2') {
+          this.$refs.funcs.submitData()
         }
       }
     }

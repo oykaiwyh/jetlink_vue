@@ -12,7 +12,7 @@
           <card-table
             :title="'属性定义'"
             :tabKey="tabKey"
-            :attributeColumns="columns"
+            :attributeColumns="attrColumns"
             :showData="propertyData"
             :edititem="editPropertiesData"
             :showDrawer="showDrawer"
@@ -22,13 +22,23 @@
           />
         </a-tab-pane>
         <a-tab-pane key="2" tab="功能定义">
-          <card-table :title="'功能定义'" :tabKey="tabKey" :attributeColumns="columns2" :showData="data"/>
+          <card-table
+            :title="'功能定义'"
+            :tabKey="tabKey"
+            :attributeColumns="funcColumns"
+            :showData="funcData"
+            :edititem="editPropertiesData"
+            :showDrawer="showDrawer"
+            @close="onCloseDrawer"
+            @onEditItem="onEditItem"
+            @addData="onOpenDrawer"
+          />
         </a-tab-pane>
         <a-tab-pane key="3" tab="事件定义">
-          <card-table :title="'事件定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/>
+          <!-- <card-table :title="'事件定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/> -->
         </a-tab-pane>
         <a-tab-pane key="4" tab="标签定义">
-          <card-table :title="'标签定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/>
+          <!-- <card-table :title="'标签定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/> -->
         </a-tab-pane>
       </a-tabs>
     </a-spin>
@@ -38,38 +48,6 @@
 <script>
   import { mapGetters } from 'vuex'
   import CardTable from '../components/CardTable'
-
-  const columns2 = [
-    {
-      title: '功能标识',
-      key: 'id',
-      dataIndex: 'id'
-    },
-    {
-      title: '名称',
-      key: 'name',
-      dataIndex: 'name'
-    },
-    {
-      title: '是否异步',
-      key: 'expands.readOnly',
-      dataIndex: 'expands.readOnly',
-      customRender: text => ((text === 'true' || text === true) ? '是' : '否')
-    },
-    {
-      title: '说明',
-      key: 'description',
-      dataIndex: 'description',
-      width: '30%',
-      ellipsis: true
-    },
-    {
-      title: '操作',
-      // width: '180px',
-      key: 'operation',
-      scopedSlots: { customRender: 'operation' }
-    }
-  ]
   const data = [
     {
       key: '1',
@@ -87,7 +65,7 @@
       CardTable
     },
     data () {
-      const columns = [
+      const attrColumns = [
         {
           title: '属性标识',
           key: 'id',
@@ -131,19 +109,61 @@
           // scopedSlots: { customRender: 'operation' }
         }
       ]
+      const funcColumns = [
+        {
+          title: '功能标识',
+          dataIndex: 'id'
+        },
+        {
+          title: '名称',
+          dataIndex: 'name'
+        },
+        {
+          title: '是否异步',
+          dataIndex: 'async',
+          customRender: text => (text ? '是' : '否')
+        },
+        {
+          title: '描述',
+          dataIndex: 'description',
+          width: '30%',
+          ellipsis: true
+        },
+        {
+          title: '操作',
+          width: '250px',
+          align: 'center',
+          customRender: (text, record) => (
+            <div>
+              <a onClick={() => this.editItem(record)}>编辑</a>
+              <a-divider type="vertical" />
+              <a onClick={() => ''}>删除</a>
+            </div>
+          )
+        }
+      ]
       return {
         spinning: true,
         editPropertiesData: {},
+        editFuncData: {},
         tabKey: '1',
         propertyData: [],
+        funcData: [],
         showDrawer: false,
         data,
-        columns,
-        columns2
+        attrColumns: attrColumns,
+        funcColumns: funcColumns
       }
     },
     mounted () {
       this.InitData()
+    },
+    watch: {
+      tabKey: {
+        handler (newKey, oldKey) {
+          this.InitData(newKey)
+        }
+      }
     },
     computed: {
       ...mapGetters('device', ['productDetailData']),
@@ -157,6 +177,12 @@
         switch (this.tabKey) {
           case '1':
             this.propertyData = JSON.parse(metadata).properties
+            console.log(this.propertyData, 111111111111)
+            this.spinning = false
+            break
+          case '2':
+            this.funcData = JSON.parse(metadata).functions
+            console.log(this.funcData, 111111111111)
             this.spinning = false
             break
           default:
@@ -172,6 +198,7 @@
       },
       onCloseDrawer () {
         this.editPropertiesData = {}
+        this.editFuncData = {}
         this.showDrawer = false
       },
       onEditItem (metadata) {

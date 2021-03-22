@@ -28,7 +28,7 @@
         <a-select
           style="width: 100%"
           placeholder="请选择数据类型"
-          v-decorator="['name',{
+          v-decorator="['valueType.type',{
             initialValue:DrawerData.valueType?DrawerData.valueType.type : undefined
           }]"
           @change="handleChangeType"
@@ -104,6 +104,10 @@
         type: Boolean,
         default: false
       },
+      paramsPos: {
+        type: Number,
+        default: 0
+      },
       paramsData: {
         type: Object,
         default: () => {}
@@ -162,10 +166,15 @@
         validateFields((err, fileValue) => {
           if (!err) {
             console.log('@@@ fileValue @@@@', fileValue)
+            if (Object.keys(this.paramsData).length > 0) {
+              this.$emit('editObjectDada', this.paramsPos, fileValue)
+            } else {
+              this.$emit('addObjectDada', fileValue)
+              this.clearData()
+            }
           }
         })
         this.showTypes = false
-        // this.$emit('editObjectDada', fileValue)
       }
     }
   }
