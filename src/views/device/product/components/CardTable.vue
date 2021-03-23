@@ -34,10 +34,20 @@
         ></define-function>
       </template>
       <template v-if="tabKey==='3'">
-        <define-event ></define-event>
+        <define-event
+          ref="events"
+          :tabKey="tabKey"
+          :edititem="edititem"
+          @onEditItem="onEditItem"
+        ></define-event>
       </template>
       <template v-if="tabKey==='4'">
-        <define-tags :form="form"></define-tags>
+        <define-tags
+          ref="tags"
+          :tabKey="tabKey"
+          :edititem="edititem"
+          @onEditItem="onEditItem"
+        ></define-tags>
       </template>
       <div
         :style="{
@@ -125,6 +135,10 @@
           this.$refs.attribute.submitData()
         } else if (this.tabKey === '2') {
           this.$refs.funcs.submitData()
+        } else if (this.tabKey === '3') {
+          this.$refs.events.submitData()
+        } else if (this.tabKey === '4') {
+          this.$refs.tags.submitData()
         }
       }
     }

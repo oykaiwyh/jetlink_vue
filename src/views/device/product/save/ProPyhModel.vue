@@ -14,7 +14,7 @@
             :tabKey="tabKey"
             :attributeColumns="attrColumns"
             :showData="propertyData"
-            :edititem="editPropertiesData"
+            :edititem="editListItem"
             :showDrawer="showDrawer"
             @close="onCloseDrawer"
             @onEditItem="onEditItem"
@@ -27,7 +27,7 @@
             :tabKey="tabKey"
             :attributeColumns="funcColumns"
             :showData="funcData"
-            :edititem="editPropertiesData"
+            :edititem="editListItem"
             :showDrawer="showDrawer"
             @close="onCloseDrawer"
             @onEditItem="onEditItem"
@@ -35,10 +35,30 @@
           />
         </a-tab-pane>
         <a-tab-pane key="3" tab="事件定义">
-          <!-- <card-table :title="'事件定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/> -->
+          <card-table
+            :title="'事件定义'"
+            :tabKey="tabKey"
+            :attributeColumns="eventColumns"
+            :showData="eventData"
+            :edititem="editListItem"
+            :showDrawer="showDrawer"
+            @close="onCloseDrawer"
+            @onEditItem="onEditItem"
+            @addData="onOpenDrawer"
+          />
         </a-tab-pane>
         <a-tab-pane key="4" tab="标签定义">
-          <!-- <card-table :title="'标签定义'" :tabKey="tabKey" :attributeColumns="columns" :showData="data"/> -->
+          <card-table
+            :title="'标签定义'"
+            :tabKey="tabKey"
+            :attributeColumns="tagColumns"
+            :showData="tagData"
+            :edititem="editListItem"
+            :showDrawer="showDrawer"
+            @close="onCloseDrawer"
+            @onEditItem="onEditItem"
+            @addData="onOpenDrawer"
+          />
         </a-tab-pane>
       </a-tabs>
     </a-spin>
@@ -48,17 +68,6 @@
 <script>
   import { mapGetters } from 'vuex'
   import CardTable from '../components/CardTable'
-  const data = [
-    {
-      key: '1',
-      id: '1',
-      name: 'John Brown',
-      age: 32,
-      valueType: { type: 'string' },
-      'expands.readOnly': true,
-      description: '131244'
-    }
-  ]
   export default {
     name: 'ProPhyModel',
     components: {
@@ -142,17 +151,95 @@
           )
         }
       ]
+      const eventColumns = [
+        {
+          title: '事件标识',
+          dataIndex: 'id'
+        },
+        {
+          title: '名称',
+          dataIndex: 'name'
+        },
+        {
+          title: '事件级别',
+          dataIndex: 'expands.level',
+          customRender: text => {
+            const gradeText = {
+              ordinary: '普通',
+              warn: '警告',
+              urgent: '紧急'
+            }
+            return gradeText[text]
+          }
+        },
+        {
+          title: '描述',
+          dataIndex: 'description',
+          width: '30%',
+          ellipsis: true
+        },
+        {
+          title: '操作',
+          width: '250px',
+          align: 'center',
+          customRender: (text, record) => (
+            <div>
+              <a onClick={() => this.editItem(record)}>编辑</a>
+              <a-divider type="vertical"/>
+              <a onClick={''}>删除</a>
+            </div>
+          )
+        }
+      ]
+      const tagColumns = [
+        {
+          title: '属性标识',
+          dataIndex: 'id'
+        },
+        {
+          title: '属性名称',
+          dataIndex: 'name'
+        },
+        {
+          title: '数据类型',
+          dataIndex: 'valueType',
+          customRender: text => text.type
+        },
+        {
+          title: '是否只读',
+          dataIndex: 'expands.readOnly',
+          customRender: text => (text === 'true' ? '是' : '否')
+        },
+        {
+          title: '说明',
+          dataIndex: 'description',
+          width: '30%',
+          ellipsis: true
+        },
+        {
+          title: '操作',
+          customRender: (text, record) => (
+            <div>
+              <a onClick={() => this.editItem(record)}>编辑</a>
+              <a-divider type="vertical"/>
+              <a onClick={''}>删除</a>
+            </div>
+          )
+        }
+      ]
       return {
         spinning: true,
-        editPropertiesData: {},
-        editFuncData: {},
+        editListItem: {},
         tabKey: '1',
         propertyData: [],
         funcData: [],
+        eventData: [],
+        tagData: [],
         showDrawer: false,
-        data,
         attrColumns: attrColumns,
-        funcColumns: funcColumns
+        funcColumns: funcColumns,
+        eventColumns: eventColumns,
+        tagColumns: tagColumns
       }
     },
     mounted () {
@@ -177,12 +264,18 @@
         switch (this.tabKey) {
           case '1':
             this.propertyData = JSON.parse(metadata).properties
-            console.log(this.propertyData, 111111111111)
             this.spinning = false
             break
           case '2':
             this.funcData = JSON.parse(metadata).functions
-            console.log(this.funcData, 111111111111)
+            this.spinning = false
+            break
+          case '3':
+            this.eventData = JSON.parse(metadata).events
+            this.spinning = false
+            break
+          case '4':
+            this.tagData = JSON.parse(metadata).tags
             this.spinning = false
             break
           default:
@@ -193,18 +286,20 @@
         this.tabKey = key
       },
       editItem (data) {
-        this.editPropertiesData = data
+        this.editListItem = data
         this.showDrawer = true
       },
       onCloseDrawer () {
-        this.editPropertiesData = {}
-        this.editFuncData = {}
+        this.editListItem = {}
         this.showDrawer = false
       },
       onEditItem (metadata) {
         // this.InitData()
         const listData = this.productDetailData(this.getDeviceId)[0]
         this.propertyData = metadata.properties
+        this.funcData = metadata.functions
+        this.eventData = metadata.events
+        this.tagData = metadata.tags
         this.$store.commit('device/EDIT_PRODUCT_LIST', {
           ...listData,
           metadata: JSON.stringify(metadata)

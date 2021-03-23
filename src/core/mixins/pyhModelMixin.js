@@ -40,7 +40,6 @@ const pyhModelMixin = {
   methods: {
     InitData (data) {
       if (Object.keys(data).length === 0) {
-        console.log('###############', Object.keys(data).length)
         this.clearData()
         return
       }
@@ -64,14 +63,20 @@ const pyhModelMixin = {
         this.valueType = this.DrawerData.output.type
         this.showTypes = true
         this.JsonData = cloneDeep(this.DrawerData.inputs)
+      } else if (typeKey === '3' || typeKey === '4') {
+        this.DrawerData = cloneDeep(data)
+        console.log('this.DrawerData 33333', this.DrawerData)
+        this.valueTypeData = this.DrawerData.valueType
+        this.valueType = this.DrawerData.valueType.type
+        this.showTypes = true
+        if (this.valueType === 'object') {
+          this.JsonData = cloneDeep(this.DrawerData.valueType.properties)
+        }
       }
     },
     clearData () {
-      console.log('this.DrawerData 1111', this.DrawerData)
       this.form.resetFields()
-      console.log('this.22222')
       this.DrawerData = {}
-      console.log('this.DrawerData 3333', this.DrawerData)
       this.valueTypeData = {}
       this.valueType = ''
       this.showTypes = false
@@ -98,10 +103,15 @@ const pyhModelMixin = {
             this.submitAttrData(fileValue)
           } else if (this.tabKey === '2') {
             this.submitFuncData(fileValue)
+          } else if (this.tabKey === '3') {
+            this.submitEventData(fileValue)
+          } else if (this.tabKey === '4') {
+            this.submitTagData(fileValue)
           }
         }
       })
     },
+    // todo: 提取为公共函数
     submitAttrData (fileValue) {
       if (this.valueType === 'object') {
         fileValue.valueType['properties'] = this.$refs.types.JsonData
@@ -145,18 +155,97 @@ const pyhModelMixin = {
         fileValue.inputs = this.JsonData
       }
       // 提交数据
-      // apis.deviceProduct.editProduct({
-      //   ...deviceInfo,
-      //   metadata: JSON.stringify(metadata)
-      // }).then(res => {
-      //   if (res.status === 200) {
-      //     this.$message.info('更新成功')
-      //     this.clearData()
-      //     this.$emit('onEditItem', metadata)
-      //   }
-      // }).catch(err => {
-      //   this.$message.info('updateData_Err', err)
-      // })
+      const deviceInfo = this.productDetailData(this.getDeviceId)[0]
+      const metadata = JSON.parse(deviceInfo.metadata)
+      const { functions } = metadata
+      let addstatus = false
+      functions.forEach((element, index) => {
+        if (element.id === fileValue.id) {
+          addstatus = true
+          functions[index] = { ...fileValue }
+        }
+      })
+      if (!addstatus) {
+        functions.push(fileValue)
+      }
+      apis.deviceProduct.editProduct({
+        ...deviceInfo,
+        metadata: JSON.stringify(metadata)
+      }).then(res => {
+        if (res.status === 200) {
+          this.$message.info('更新成功')
+          this.clearData()
+          this.$emit('onEditItem', metadata)
+        }
+      }).catch(err => {
+        this.$message.info('updateData_Err', err)
+      })
+    },
+    submitEventData (fileValue) {
+      // 处理输出参数
+      if (this.valueType === 'object') {
+        fileValue.valueType['properties'] = this.$refs.types.JsonData
+      }
+
+      // 提交数据
+      const deviceInfo = this.productDetailData(this.getDeviceId)[0]
+      const metadata = JSON.parse(deviceInfo.metadata)
+      const { events } = metadata
+      let addstatus = false
+      events.forEach((element, index) => {
+        if (element.id === fileValue.id) {
+          addstatus = true
+          events[index] = { ...fileValue }
+        }
+      })
+      if (!addstatus) {
+        events.push(fileValue)
+      }
+      apis.deviceProduct.editProduct({
+        ...deviceInfo,
+        metadata: JSON.stringify(metadata)
+      }).then(res => {
+        if (res.status === 200) {
+          this.$message.info('更新成功')
+          this.clearData()
+          this.$emit('onEditItem', metadata)
+        }
+      }).catch(err => {
+        this.$message.info('updateData_Err', err)
+      })
+    },
+    submitTagData (fileValue) {
+      // 处理输出参数
+      if (this.valueType === 'object') {
+        fileValue.valueType['properties'] = this.$refs.types.JsonData
+      }
+
+      // 提交数据
+      const deviceInfo = this.productDetailData(this.getDeviceId)[0]
+      const metadata = JSON.parse(deviceInfo.metadata)
+      const { tags } = metadata
+      let addstatus = false
+      tags.forEach((element, index) => {
+        if (element.id === fileValue.id) {
+          addstatus = true
+          tags[index] = { ...fileValue }
+        }
+      })
+      if (!addstatus) {
+        tags.push(fileValue)
+      }
+      apis.deviceProduct.editProduct({
+        ...deviceInfo,
+        metadata: JSON.stringify(metadata)
+      }).then(res => {
+        if (res.status === 200) {
+          this.$message.info('更新成功')
+          this.clearData()
+          this.$emit('onEditItem', metadata)
+        }
+      }).catch(err => {
+        this.$message.info('updateData_Err', err)
+      })
     }
   }
 }

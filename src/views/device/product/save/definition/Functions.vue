@@ -34,7 +34,7 @@
               rules: [
                 { required: true },
               ],
-              initialValue: DrawerData.async ? DrawerData.async : undefined
+              initialValue: DrawerData.async
             },
           ]"
         >
@@ -120,39 +120,17 @@
         />
       </a-form-item>
     </a-form>
-    <div
-      :style="{
-        position: 'absolute',
-        right: 0,
-        bottom: 0,
-        width: '100%',
-        borderTop: '1px solid #e9e9e9',
-        padding: '10px 16px',
-        background: '#fff',
-        textAlign: 'right',
-        zIndex: 1,
-      }"
-    >
-      <a-button :style="{ marginRight: '8px' }">
-        关闭
-      </a-button>
-      <a-button type="primary" >
-        保存
-      </a-button>
-    </div>
   </div>
 </template>
 
 <script>
   import DefineParamter from './Paramter'
-  import ValueType from './ValueType'
   import pyhModelMixin from '@/core/mixins/pyhModelMixin'
   export default {
     name: 'DefineFunction',
     mixins: [pyhModelMixin],
     components: {
-      DefineParamter,
-      ValueType
+      DefineParamter
     },
     data () {
       return {
