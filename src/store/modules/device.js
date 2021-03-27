@@ -9,7 +9,8 @@ const device = {
     productAllList: [],
     deviceCount: {},
     unitsData: [],
-    deviceDetail: {}
+    deviceDetail: {},
+    deviceNotifierType: []
   },
   getters,
   actions: {
@@ -88,6 +89,17 @@ const device = {
           }
         })
       })
+    },
+    getNotifierType ({ commit }) {
+      return new Promise((resolve, reject) => {
+        apis.deviceInstance.getDeviceNotifierType()
+        .then(res => {
+          if (res.status === 200) {
+            commit('SET_NOTIFIER_TYPE', res.result)
+            resolve(true)
+          }
+        })
+      })
     }
   },
   mutations: {
@@ -109,6 +121,9 @@ const device = {
     },
     SET_DEVICE_DETAIL: (state, data) => {
       state.deviceDetail = data
+    },
+    SET_NOTIFIER_TYPE: (state, data) => {
+      state.deviceNotifierType = data
     }
   }
 

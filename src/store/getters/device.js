@@ -25,6 +25,10 @@ const getters = {
     /**
    * @description 一个设备详情
    */
-  deviceDetailData: state => state.deviceDetail
+  deviceDetailData: state => state.deviceDetail,
+  /**
+   * @description 设置报警时，通知类型
+   */
+  notifierType: state => state.deviceNotifierType
 }
 export default getters

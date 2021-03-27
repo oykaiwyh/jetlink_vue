@@ -17,6 +17,7 @@
                   v-decorator="['name',{
                     initialValue: deviceDetailData.name ? deviceDetailData.name: ''
                   }]"
+                  @change="setWarnName"
                 />
               </a-form-item>
             </a-col>
@@ -35,6 +36,7 @@
                 unCheckedChildren="关闭防抖"
                 :style="{marginLeft: '20px'}"
                 @change="setShakeLimit"
+                :checked="shakeLimit.enabled ? shakeLimit.enabled : false"
               />
               <template v-if="shakeLimit.enabled">
                 <a-input
@@ -157,6 +159,7 @@
       return {
         title: '查看',
         form: this.$form.createForm(this, { name: 'DefineAlarmFrom' }),
+        name: '',
         shakeLimit: {},
         triggers: [],
         properties: [],
@@ -165,30 +168,37 @@
       }
     },
     watch: {
-      showModal: {
+      deviceDetailData: {
         handler (newVal, oldVal) {
-          if (newVal === true) {
-            this.GetData(this.deviceDetailData)
-          }
+          this.GetData(newVal)
         }
       }
-    },
-    computed: {
     },
     methods: {
       GetData (initData) {
         if (Object.keys(initData).length > 0) {
           // this.triggers = [...initData.alarmRule.triggers]
+          this.shakeLimit = cloneDeep(initData.alarmRule.shakeLimit)
           this.triggers = cloneDeep(initData.alarmRule.triggers)
           this.properties = cloneDeep(initData.alarmRule.properties)
           this.actions = cloneDeep(initData.alarmRule.actions)
         } else {
-          this.triggers = []
-          this.properties = []
-          this.actions = []
+          this.clearData()
         }
       },
+      clearData () {
+        this.form.resetFields()
+        this.name = ''
+        this.triggers = []
+        this.shakeLimit = {}
+        this.properties = []
+        this.actions = []
+      },
+      setWarnName (e) {
+        this.name = e.target.value
+      },
       setShakeLimit (value) {
+        console.log('setShakeLimit', value)
         this.$set(this.shakeLimit, 'enabled', value)
       },
       setShakeLimitTime (e) {
@@ -218,6 +228,7 @@
       },
       SetModalOk () {
         const submitData = {
+          name: this.name,
           triggers: this.triggers,
           properties: this.properties,
           actions: this.actions,

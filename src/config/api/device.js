@@ -34,7 +34,7 @@ export const DeviceManageApi = {
   delDevice: (id) => `/device-instance/${id}`,
   deviceDetail: (id) => `/device/instance/${id}/detail`,
   deviceConfiguration: (protocol, transport) => `/protocol/${protocol}/${transport}/configuration`,
-  deviceAlarmList: (id) => `/device/alarm/device/${id}`,
+  deviceAlarmList: (target, targetId) => `/device/alarm/${target}/${targetId}`,
   addDeviceAlarmInfo: (target, targetId) => `/device/alarm/${target}/${targetId}`,
   DeviceNotifierType: `/notifier/config/types`
 }

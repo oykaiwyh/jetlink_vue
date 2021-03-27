@@ -65,9 +65,9 @@ export function getDeviceConfig (protocol, transport) {
 /**
  * @description 设备 --- 设备报警列表
  */
-export function getDeviceAlarmList (id) {
+export function getDeviceAlarmList (target, targetId) {
   return request({
-    url: DeviceManageApi.deviceAlarmList(id),
+    url: DeviceManageApi.deviceAlarmList(target, targetId),
     method: 'GET'
   })
 }

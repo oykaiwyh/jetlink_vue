@@ -73,7 +73,7 @@
           <pro-pyh-model></pro-pyh-model>
         </a-tab-pane>
         <a-tab-pane key="warnSetting" tab="告警设置">
-          <device-alarm></device-alarm>
+          <device-alarm :target="'product'"></device-alarm>
         </a-tab-pane>
       </a-tabs>
     </a-card>

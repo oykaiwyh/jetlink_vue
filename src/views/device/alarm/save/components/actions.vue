@@ -26,12 +26,22 @@
         </a-col>
         <template v-if="actionType === 'notifier'">
           <a-col :span="4">
-            <a-select placeholder="选择通知类型" key="actions">
+            <a-select
+              placeholder="选择通知类型"
+              key="actions"
+              :defaultValue="defaultNotifierType"
+              @dropdownVisibleChange="getNotifierType"
+            >
+              <template slot="notFoundContent">
+                <a-spin tip="加载内容中"></a-spin>
+              </template>
               <a-select-option
                 v-for="(item) in notifierType"
                 :key="item.id"
                 :data="item"
-              >{{ item.name }}</a-select-option>
+              >
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-col>
           <a-col :span="4">
@@ -98,9 +108,17 @@
 </template>
 
 <script>
-  import apis from '@/api'
+  // import apis from '@/api'
   import { cloneDeep } from 'lodash'
   import NetworkBind from '@/views/gateway/bind'
+  import { mapGetters } from 'vuex'
+  const NotifierTypeMap = new Map()
+  NotifierTypeMap.set('sms', '短信')
+  NotifierTypeMap.set('dingTalk', '钉钉')
+  NotifierTypeMap.set('voice', '语音')
+  NotifierTypeMap.set('weixin', '微信')
+  NotifierTypeMap.set('email', '邮件')
+
   export default {
     name: 'AlarmActions',
     props: {
@@ -120,8 +138,9 @@
     data () {
       return {
         actionType: '',
+        defaultNotifierType: undefined,
         configuration: {},
-        notifierType: [],
+        // notifierType: [],
         messageType: '',
         showModal: false,
         actions: {}
@@ -133,12 +152,14 @@
     watch: {
       actionsData: {
         handler (newVal, oldVal) {
-          console.log('ccc', newVal, oldVal)
           this.InitData(newVal)
         },
         immediate: true,
         deep: true
       }
+    },
+    computed: {
+      ...mapGetters('device', ['notifierType'])
     },
     methods: {
       InitData (data) {
@@ -148,6 +169,9 @@
             this.configuration = cloneDeep(data.configuration)
             if (data.configuration.message) {
               this.messageType = cloneDeep(data.configuration.message.messageType)
+            }
+            if (data.configuration.notifyType) {
+              this.defaultNotifierType = NotifierTypeMap.get(data.configuration.notifyType)
             }
           }
         }
@@ -161,14 +185,21 @@
         console.log('data', data)
         this.$emit('save', this.position, data)
       },
+      getNotifierType () {
+        console.log('@@@@@@@@@@@@@')
+        if (!this.notifierType.length) {
+          this.$store.dispatch('device/getNotifierType')
+        }
+      },
       setActionsType (value) {
         if (value === 'notifier') {
-          apis.deviceInstance.getDeviceNotifierType()
-            .then(res => {
-              if (res.status === 200) {
-                this.notifierType = res.result
-              }
-            })
+          this.getNotifierType()
+          // apis.deviceInstance.getDeviceNotifierType()
+          //   .then(res => {
+          //     if (res.status === 200) {
+          //       this.notifierType = res.result
+          //     }
+          //   })
         }
         this.actionType = value
         this.subData()

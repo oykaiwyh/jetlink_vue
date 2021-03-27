@@ -57,7 +57,7 @@
         <ins-editor-log></ins-editor-log>
       </template>
       <template v-if="ActiveTabKey ==='alarm' ">
-        <device-alarm></device-alarm>
+        <device-alarm :target="'device'"></device-alarm>
       </template>
     </page-header-wrapper>
   </a-spin>

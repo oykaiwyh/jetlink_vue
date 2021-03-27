@@ -4,7 +4,14 @@
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="告警设置">
           <a-card :bordered="false">
-            <a-button slot="title" icon="plus" type="primary" @click="() => { showModal = true; DetailData={} }">新增告警</a-button>
+            <a-button
+              slot="title"
+              icon="plus"
+              type="primary"
+              @click="() => { showModal = true; DetailData={} }"
+            >
+              新增告警
+            </a-button>
             <a-table
               rowKey="id"
               :columns="attributeColumns"
@@ -13,6 +20,7 @@
             >
             </a-table>
             <define-alarm
+              ref="alramList"
               :showModal="showModal"
               :deviceDetailData="DetailData"
               @SetModalOk="SetModalOk"
@@ -60,17 +68,6 @@
   import { mapGetters } from 'vuex'
   import ComTable from '@/components/Table'
   import DefineAlarm from './save'
-  // const data = [
-  //   {
-  //     key: '1',
-  //     name: 'John Brown',
-  //     createTime: '2010-10-10',
-  //     state: {
-  //       text: '已停止',
-  //       value: 'stopped'
-  //     }
-  //   }
-  // ]
   const actions = [
     {
       name: '查看',
@@ -91,6 +88,12 @@
   ]
   export default {
     name: 'DeviceAlarm',
+    props: {
+      target: {
+        type: String,
+        default: ''
+      }
+    },
     components: {
       ComTable,
       DefineAlarm
@@ -183,12 +186,12 @@
       // }, 30)
     },
     computed: {
-      ...mapGetters('device', ['deviceDetailData'])
+      ...mapGetters('device', ['deviceDetailData', 'productDetailData'])
     },
     methods: {
       GetData () {
         const { id } = this.$route.params
-        apis.deviceInstance.getDeviceAlarmList(id)
+        apis.deviceInstance.getDeviceAlarmList(this.target, id)
           .then(res => {
             if (res.status === 200) {
               this.showData = res.result
@@ -200,26 +203,66 @@
         this.AlarmActiveKey = item.type
         this.showModal = true
       },
-      addAlarmInfo (data) {
+      addAlarmInfo (alarmRuleData) {
         const { id } = this.$route.params
-        const {
-          deviceId = '',
-          deviceName = '',
-          name = '',
-          productId = '',
-          productName = ''
-        } = this.deviceDetailData
-        apis.deviceInstance.addDeviceAlarmInfo('device', id, {
+        let paramsData = {}
+        if (this.$route.meta.title === '产品详情') {
+          const {
+            name = '',
+            productId = '',
+            productName = ''
+          } = this.productDetailData(id)[0]
+          paramsData = {
+            alarmRule: {
+              name,
+              productId,
+              productName,
+              ...alarmRuleData
+            },
+            name: alarmRuleData.name,
+            target: this.target,
+            targetId: id
+          }
+        } else if (this.$route.meta.title === '设备详情') {
+          const {
+            name = '',
+            deviceName = '',
+            deviceId = '',
+            productId = '',
+            productName = ''
+          } = this.deviceDetailData
+          paramsData = {
+            alarmRule: {
+              name,
+              deviceId,
+              deviceName,
+              productId,
+              productName,
+              ...alarmRuleData
+            },
+            name: alarmRuleData.name,
+            target: this.target,
+            targetId: id
+          }
+        }
+        apis.deviceInstance.addDeviceAlarmInfo(this.target, id, paramsData).then(res => {
+          if (res.status === 200) {
+            this.GetData()
+          }
+        }).catch((err) => {
+          this.$message.error(err)
+        })
+      },
+      editAlarmInfo (alarmRuleData) {
+        const { id } = this.$route.params
+        const defalutData = this.DetailData
+        apis.deviceInstance.addDeviceAlarmInfo(this.target, id, {
+          ...defalutData,
           alarmRule: {
-            deviceId,
-            deviceName,
-            name,
-            productId,
-            productName,
-            ...data
+            ...defalutData.alarmRuleData,
+            ...alarmRuleData
           },
-          target: 'device',
-          targetId: id
+          name: alarmRuleData.name
         }).then(res => {
           if (res.status === 200) {
             this.GetData()
@@ -230,10 +273,15 @@
       },
       SetModalOk (data) {
         console.log('################', data)
-        this.addAlarmInfo(data)
+        if (Object.keys(this.DetailData).length) {
+          this.editAlarmInfo(data)
+        } else {
+          this.addAlarmInfo(data)
+        }
         this.showModal = false
       },
       SetModalCancel () {
+        this.DetailData = {}
         this.showModal = false
       }
     }

@@ -135,7 +135,6 @@
       }
     },
     mounted () {
-      console.log(11111)
       console.log('this.triggerData', this.triggerData)
       this.initData(this.triggerData)
     },
@@ -155,7 +154,9 @@
           this.triggerType = newTriggers.type
           this.filters = cloneDeep(newTriggers.filters)
         } else {
-
+          this.trigger = {}
+          this.triggerType = ''
+          this.filters = []
         }
       },
       // todo: 防抖操作

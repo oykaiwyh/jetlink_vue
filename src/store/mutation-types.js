@@ -31,5 +31,6 @@ export const PRODUCT = {
   SET_DEVICE_NUM: 'device_num',
   SET_PROTOCOL_UNITS: 'protocol_units',
   SET_DEVICE_DETAIL: 'device_detail',
-  EDIT_PRODUCT_LIST: 'edit_product_list'
+  EDIT_PRODUCT_LIST: 'edit_product_list',
+  SET_NOTIFIER_TYPE: 'set_notifier_type'
 }
